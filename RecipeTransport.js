@@ -23,6 +23,7 @@
 "use strict";
 
 var iotdb = require('iotdb');
+var iotdb_transport = require('iotdb-transport');
 var _ = iotdb._;
 var bunyan = iotdb.bunyan;
 
@@ -53,7 +54,7 @@ var CODE_TIMESTAMP_ERROR = 409;
 /* --- constructor --- */
 /**
  *  <p>
- *  See {iotdb.transporter.Transport#Transport} for documentation.
+ *  See {iotdb_transport.Transport#Transport} for documentation.
  *
  *  @constructor
  */
@@ -72,12 +73,12 @@ var RecipeTransport = function (initd) {
     );
 };
 
-RecipeTransport.prototype = new iotdb.transporter.Transport();
+RecipeTransport.prototype = new iotdb_transport.Transport();
 RecipeTransport.prototype._class = "RecipeTransport";
 
 /* --- methods --- */
 /**
- *  See {iotdb.transporter.Transport#list} for documentation.
+ *  See {iotdb_transport.Transport#list} for documentation.
  */
 RecipeTransport.prototype.list = function (paramd, callback) {
     var self = this;
@@ -143,7 +144,7 @@ RecipeTransport.prototype.list = function (paramd, callback) {
 };
 
 /**
- *  See {iotdb.transporter.Transport#added} for documentation.
+ *  See {iotdb_transport.Transport#added} for documentation.
  */
 RecipeTransport.prototype.added = function (paramd, callback) {
     var self = this;
@@ -159,7 +160,7 @@ RecipeTransport.prototype.added = function (paramd, callback) {
 };
 
 /**
- *  See {iotdb.transporter.Transport#about} for documentation.
+ *  See {iotdb_transport.Transport#about} for documentation.
  */
 RecipeTransport.prototype.about = function (paramd, callback) {
     var self = this;
@@ -197,7 +198,7 @@ RecipeTransport.prototype.about = function (paramd, callback) {
 };
 
 /**
- *  See {iotdb.transporter.Transport#get} for documentation.
+ *  See {iotdb_transport.Transport#get} for documentation.
  */
 RecipeTransport.prototype.get = function (paramd, callback) {
     var self = this;
@@ -306,7 +307,7 @@ RecipeTransport.prototype.get = function (paramd, callback) {
 };
 
 /**
- *  See {iotdb.transporter.Transport#update} for documentation.
+ *  See {iotdb_transport.Transport#update} for documentation.
  */
 RecipeTransport.prototype.update = function (paramd, callback) {
     var self = this;
@@ -392,7 +393,7 @@ RecipeTransport.prototype.update = function (paramd, callback) {
 };
 
 /**
- *  See {iotdb.transporter.Transport#updated} for documentation.
+ *  See {iotdb_transport.Transport#updated} for documentation.
  */
 RecipeTransport.prototype.updated = function (paramd, callback) {
     var self = this;

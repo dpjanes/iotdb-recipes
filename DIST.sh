@@ -6,8 +6,7 @@
 #   2015-07-23
 #
 
-exit 0
-PACKAGE=homestar-TEMPLATE
+PACKAGE=iotdb-recipes
 DIST_ROOT=/var/tmp/.dist.$$
 
 if [ ! -d "$DIST_ROOT" ]
@@ -34,8 +33,7 @@ echo "=================="
         --exclude "node_modules" \
         README.md LICENSE \
         homestar.json package.json \
-        TemplateBridge.js index.js \
-        models/*js \
+        RecipeTransport.js index.js recipe.js \
         |
     ( cd "${NPM_DST}" && tar xvf - )
 
