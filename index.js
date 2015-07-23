@@ -22,3 +22,5 @@
 
 "use strict";
 
+exports.recipe = require('./recipe')
+exports.Transport = require('./RecipeTransport').RecipeTransport;
