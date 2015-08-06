@@ -541,9 +541,9 @@ var recipe_model = function (recipe) {
     var value_attribute = {
         "@type": "iot:Attribute",
         "@id": "#value",
-        "iot:purpose": recipe["iot:purpose"],
+        "iot:purpose": recipe["iot:purpose"] || "iot-attribute:value",
         "schema:name": "value",
-        "iot:type": recipe["iot:type"],
+        "iot:type": recipe["iot:type"] || "iot:null",
         "iot:role": ["iot-attribute:role-control", "iot-attribute:role-reading", ],
     };
     if (recipe.values) {
@@ -560,7 +560,7 @@ var recipe_model = function (recipe) {
         "@id": "/api/recipes/" + recipe._id + "/model",
         "@type": ["iot:Model", "iot:Recipe", ],
         "@timestamp": context.created_timestamp,
-        "schema:name": recipe._name,
+        "schema:name": recipe.name,
         "iot:attribute": [
             value_attribute, {
                 "@type": "iot:Attribute",
@@ -668,6 +668,26 @@ var recipe_status = function (recipe, context) {
 };
 
 /**
+ */
+var recipe_meta = function (recipe, context) {
+    var self = this;
+
+    if (!context) {
+        context = make_context(recipe);
+    }
+
+    var d = {
+        "@timestamp": context.created_timestamp,
+        "iot:thing-id": context.id,
+        "iot:device-id": "urn:iotdb:cookbook:" + recipe.cookbook_id,
+        "iot:cookbook": recipe.group || "",
+        "schema:name": recipe.name || "",
+    };
+
+    return d;
+};
+
+/**
  *  API
  */
 exports.make_context = make_context;
@@ -683,3 +703,4 @@ exports.recipe_istate = recipe_istate;
 exports.recipe_ostate = recipe_ostate;
 exports.recipe_model = recipe_model;
 exports.recipe_status = recipe_status;
+exports.recipe_meta = recipe_meta;

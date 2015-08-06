@@ -285,12 +285,8 @@ RecipeTransport.prototype.get = function (paramd, callback) {
                 user: paramd.user,
             });
         } else if (paramd.band === "meta") {
-            var context = recipe.make_context(rd);
-            d = {
-                "@timestamp": context.created_timestamp,
-                "schema:name": rd._name,
-                "iot:cookbook": rd.group || "",
-            };
+            d = recipe.recipe_meta(rd);
+            delete d["@id"];
 
             return callback({
                 id: paramd.id,
@@ -377,6 +373,8 @@ RecipeTransport.prototype.update = function (paramd, callback) {
                 return callback(callbackd);
             }
 
+            // XXX - add this code when you have time to test
+            // if (paramd.value.value !== undefined) {}
             context.execute_timestamp = new_timestamp;
             context.onclick(paramd.value.value);
 
