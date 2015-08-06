@@ -31,6 +31,7 @@ echo "=================="
 
     tar cf - \
         --exclude "node_modules" \
+        --exclude ".*" \
         README.md LICENSE \
         homestar.json package.json \
         RecipeTransport.js index.js recipe.js \
