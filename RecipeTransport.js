@@ -94,6 +94,11 @@ RecipeTransport.prototype.list = function (paramd, callback) {
 
     var rds = recipe.recipes();
     var count = rds.length;
+    if (count === 0) {
+        return callback({
+            end: true,
+        });
+    }
 
     var _authorize = function (rd) {
         var r_id = recipe.recipe_to_id(rd);

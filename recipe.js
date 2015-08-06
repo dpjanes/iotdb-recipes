@@ -235,6 +235,12 @@ Context.prototype.onclick = function (value) {
 var load_recipes = function (initd) {
     var self = this;
 
+    if (iotdb.__recipes_loaded) {
+        return;
+    } else {
+        iotdb.__recipes_loaded = true;
+    }
+
     initd = _.defaults(initd, {
         cookbooks_path: "cookbooks",
     });
