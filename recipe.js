@@ -544,6 +544,8 @@ var recipe_model = function (recipe) {
         "iot:purpose": recipe["iot:purpose"] || "iot-attribute:value",
         "schema:name": "value",
         "iot:type": recipe["iot:type"] || "iot:null",
+        "iot:write": true,
+        "iot:read": true,
         "iot:role": ["iot-attribute:role-control", "iot-attribute:role-reading", ],
     };
     if (recipe.values) {
@@ -568,6 +570,7 @@ var recipe_model = function (recipe) {
                 "iot:purpose": "iot-attribute:message.html",
                 "schema:name": "text",
                 "iot:type": "iot:string",
+                "iot:read": true,
                 "iot:role": ["iot-attribute:role-reading", ],
             }, {
                 "@type": "iot:Attribute",
@@ -575,6 +578,7 @@ var recipe_model = function (recipe) {
                 "iot:purpose": "iot-attribute:message.text",
                 "schema:name": "text",
                 "iot:type": "iot:string",
+                "iot:read": true,
                 "iot:role": ["iot-attribute:role-reading", ],
             }, {
                 "@type": "iot:Attribute",
@@ -582,6 +586,7 @@ var recipe_model = function (recipe) {
                 "iot:purpose": "iot-attribute:sensor.running",
                 "schema:name": "text",
                 "iot:type": "iot:boolean",
+                "iot:read": true,
                 "iot:role": ["iot-attribute:role-reading", ],
             },
         ]
@@ -679,10 +684,13 @@ var recipe_meta = function (recipe, context) {
     var d = {
         "@timestamp": context.created_timestamp,
         "iot:thing-id": context.id,
-        "iot:device-id": "urn:iotdb:cookbook:" + recipe.cookbook_id,
         "iot:cookbook": recipe.group || "",
         "schema:name": recipe.name || "",
     };
+
+    if (recipe.cookbook_id) {
+        d["iot:device-id"] = "urn:iotdb:cookbook:" + recipe.cookbook_id;
+    }
 
     return d;
 };
