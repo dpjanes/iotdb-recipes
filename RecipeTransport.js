@@ -328,17 +328,17 @@ RecipeTransport.prototype.update = function (paramd, callback) {
         });
     }
 
-    var rd = recipe.recipe_by_id(paramd.id);
-    if (!rd) {
-        return callback({
-            id: paramd.id,
-            error: MSG_NOT_FOUND,
-            status: CODE_NOT_FOUND,
-            user: paramd.user,
-        });
-    }
+    var xd = recipe.recipe_by_id(paramd.id);
 
     if (paramd.band === "ostate") {
+        if (!xd) {
+            return callback({
+                id: paramd.id,
+                error: MSG_NOT_FOUND,
+                status: CODE_NOT_FOUND,
+                user: paramd.user,
+            });
+        }
         var authd = {
             id: paramd.id,
             authorize: "write",
@@ -382,6 +382,41 @@ RecipeTransport.prototype.update = function (paramd, callback) {
                 id: paramd.id,
                 band: paramd.band,
                 user: paramd.user,
+            });
+        });
+    } else if (paramd.band === "meta") {
+        var authd = {
+            id: paramd.id,
+            authorize: "write",
+            band: paramd.band,
+            user: paramd.user,
+        };
+        self.initd.authorize(authd, function (error, is_authorized) {
+            if (!is_authorized) {
+                var callbackd = {
+                    id: paramd.id,
+                    band: paramd.band,
+                    user: paramd.user,
+                    error: MSG_NOT_AUTHORIZED,
+                    status: CODE_NOT_AUTHORIZED,
+                };
+                return callback(callbackd);
+            }
+
+            recipe.create_iotql(paramd.value, function(error) {
+                if (error) {
+                    return callback({
+                        id: paramd.id,
+                        error: _.error.message(error),
+                    });
+                }
+
+                console.log("WROTE RECIPE!!!!");
+                return callback({
+                    id: paramd.id,
+                    band: paramd.band,
+                    user: paramd.user,
+                });
             });
         });
     } else {

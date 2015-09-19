@@ -245,6 +245,8 @@ var load_recipes = function (initd) {
         cookbooks_path: "cookbooks",
     });
 
+    iotdb.__recipes_path = initd.cookbooks_path;
+
     logger.info({
         method: "_load_recipes",
         cookbooks_path: initd.cookbooks_path,
@@ -356,9 +358,9 @@ var _init_recipe = function (reciped) {
     var type = reciped['iot:type'];
     if (type === undefined) {
         if (reciped.values) {
-            reciped['iot:type'] = 'iot:string';
+            reciped['iot:type'] = 'iot:type.string';
         } else {
-            reciped['iot:type'] = 'iot:null';
+            reciped['iot:type'] = 'iot:type.null';
         }
     }
 
@@ -541,22 +543,22 @@ var recipe_model = function (recipe) {
     var value_attribute = {
         "@type": "iot:Attribute",
         "@id": "#value",
-        "iot:purpose": recipe["iot:purpose"] || "iot-attribute:value",
+        "iot:purpose": recipe["iot:purpose"] || "iot-purpose:value",
         "schema:name": "value",
-        "iot:type": recipe["iot:type"] || "iot:null",
+        "iot:type": recipe["iot:type"] || "iot:type.null",
         "iot:write": true,
         "iot:read": true,
-        "iot:role": ["iot-attribute:role-control", "iot-attribute:role-reading", ],
+        "iot:role": ["iot-purpose:role-control", "iot-purpose:role-reading", ],
     };
     if (recipe.values) {
-        value_attribute['iot:enumeration'] = recipe.values;
+        value_attribute['iot:format.enumeration'] = recipe.values;
     }
 
     return {
         "@context": {
             "iot": _.ld.namespace["iot"],
             "iot-unit": _.ld.namespace["iot-unit"],
-            "iot-attribute": _.ld.namespace["iot-attribute"],
+            "iot-purpose": _.ld.namespace["iot-purpose"],
             "schema": _.ld.namespace["schema"],
         },
         "@id": "/api/recipes/" + recipe._id + "/model",
@@ -567,27 +569,27 @@ var recipe_model = function (recipe) {
             value_attribute, {
                 "@type": "iot:Attribute",
                 "@id": "#message",
-                "iot:purpose": "iot-attribute:message.html",
+                "iot:purpose": "iot-purpose:message.html",
                 "schema:name": "text",
-                "iot:type": "iot:string",
+                "iot:type": "iot:type.string",
                 "iot:read": true,
-                "iot:role": ["iot-attribute:role-reading", ],
+                "iot:role": ["iot-purpose:role-reading", ],
             }, {
                 "@type": "iot:Attribute",
                 "@id": "#text",
-                "iot:purpose": "iot-attribute:message.text",
+                "iot:purpose": "iot-purpose:message.text",
                 "schema:name": "text",
-                "iot:type": "iot:string",
+                "iot:type": "iot:type.string",
                 "iot:read": true,
-                "iot:role": ["iot-attribute:role-reading", ],
+                "iot:role": ["iot-purpose:role-reading", ],
             }, {
                 "@type": "iot:Attribute",
                 "@id": "#running",
-                "iot:purpose": "iot-attribute:sensor.running",
+                "iot:purpose": "iot-purpose:sensor.running",
                 "schema:name": "text",
-                "iot:type": "iot:boolean",
+                "iot:type": "iot:type.boolean",
                 "iot:read": true,
-                "iot:role": ["iot-attribute:role-reading", ],
+                "iot:role": ["iot-purpose:role-reading", ],
             },
         ]
     };
@@ -696,6 +698,14 @@ var recipe_meta = function (recipe, context) {
 };
 
 /**
+ *  Create IOTQL
+ */
+var create_iotql = function(metad, done) {
+    console.log("HERE:XXX", metad, iotdb.__recipes_path);
+    return done(new Error("not implemented [3]"));
+};
+
+/**
  *  API
  */
 exports.make_context = make_context;
@@ -712,3 +722,5 @@ exports.recipe_ostate = recipe_ostate;
 exports.recipe_model = recipe_model;
 exports.recipe_status = recipe_status;
 exports.recipe_meta = recipe_meta;
+
+exports.create_iotql = create_iotql;
