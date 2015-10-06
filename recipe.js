@@ -303,8 +303,9 @@ var _load_iotql = function (initd) {
             group: "Scenes",
             cookbook_id: "9d94e5c1-e99c-48e3-96d3-37f96f95dff0",
             onclick: function (context, value) {
-                console.log("HERE:XXX");
-                process.exit();
+                initd.db.execute("DO " + name, function(error, result) {
+                    console.log("DB SCENE EXECUTE FROM RECIPE! " + name);
+                });
             }
         };
 
