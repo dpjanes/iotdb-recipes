@@ -233,22 +233,26 @@ Context.prototype.onclick = function (value) {
  *  They end up in iot.data('recipes')
  */
 var load_recipes = function (initd) {
-    var self = this;
-
     if (iotdb.__recipes_loaded) {
         return;
-    } else {
-        iotdb.__recipes_loaded = true;
     }
+    iotdb.__recipes_loaded = true;
 
     initd = _.defaults(initd, {
         cookbooks_path: "cookbooks",
+        iotql: null,
+        db: null,
     });
 
     iotdb.__recipes_path = initd.cookbooks_path;
 
+    _load_js(initd);
+    _load_iotql(initd);
+};
+
+var _load_js = function (initd) {
     logger.info({
-        method: "_load_recipes",
+        method: "_load_js",
         cookbooks_path: initd.cookbooks_path,
     }, "loading recipes");
 
@@ -276,11 +280,68 @@ var load_recipes = function (initd) {
     });
 };
 
+var _load_iotql = function (initd) {
+    if (!initd.iotql || !initd.db) {
+        return;
+    }
+
+    logger.info({
+        method: "_load_iotql",
+        cookbooks_path: initd.cookbooks_path,
+    }, "loading IoTQL recipes");
+
+    // track new scenes being added
+    initd.db.on("scene", function(name, metad) {
+        var rd = {
+            enabled: true,
+            name: name,
+            group: "Scenes",
+            cookbook_id: "9d94e5c1-e99c-48e3-96d3-37f96f95dff0",
+            onclick: function(context, value) {
+                console.log("HERE:XXX"); process.exit();
+            }
+        };
+
+        iotdb.recipe(rd);
+
+        if (post_init) {
+            _init_recipe(rd);
+        }
+    });
+
+    // load any IoTQL 
+    var filenames = cfg.cfg_find(iotdb.iot().envd, initd.cookbooks_path, /[.]iotql$/);
+    cfg.cfg_load_file(filenames, function (paramd) {
+        if (paramd.error !== undefined) {
+            if (paramd.filename) {
+                logger.error({
+                    method: "_load_iotql",
+                    filename: paramd.filename,
+                    error: paramd.error,
+                    exception: paramd.exception ? "" + paramd.exception : "",
+                }, "error loading JS Model");
+            }
+            return;
+        }
+
+        logger.debug({
+            method: "_load_iotql",
+            filename: paramd.filename
+        }, "found IoTQL");
+
+        initd.db.execute(paramd.doc, function(error, result) {
+            // console.log("HERE:AAA", paramd.doc);
+        });
+    });
+};
+
 /**
  *  Call me once
  */
+var post_init;
 var _init_recipe;
 var init_recipes = function () {
+
     var iot = iotdb.iot();
     var cds = iot.data("recipe");
     if (!cds || !cds.length) {
@@ -288,8 +349,11 @@ var init_recipes = function () {
     }
 
     for (var ci in cds) {
+        // console.log("HERE:B"); console.trace(0); process.exit(0);
         _init_recipe(cds[ci]);
     }
+
+    post_init = true;
 };
 
 var _init_recipe = function (reciped) {
@@ -698,14 +762,6 @@ var recipe_meta = function (recipe, context) {
 };
 
 /**
- *  Create IOTQL
- */
-var create_iotql = function(metad, done) {
-    console.log("HERE:XXX", metad, iotdb.__recipes_path);
-    return done(new Error("not implemented [3]"));
-};
-
-/**
  *  API
  */
 exports.make_context = make_context;
@@ -722,5 +778,3 @@ exports.recipe_ostate = recipe_ostate;
 exports.recipe_model = recipe_model;
 exports.recipe_status = recipe_status;
 exports.recipe_meta = recipe_meta;
-
-exports.create_iotql = create_iotql;

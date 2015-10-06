@@ -357,7 +357,7 @@ RecipeTransport.prototype.update = function (paramd, callback) {
                 return callback(callbackd);
             }
 
-            var context = recipe.make_context(rd);
+            var context = recipe.make_context(xd);
 
             var new_timestamp = paramd.value["@timestamp"];
             var old_timestamp = context.execute_timestamp;
@@ -403,6 +403,7 @@ RecipeTransport.prototype.update = function (paramd, callback) {
                 return callback(callbackd);
             }
 
+            /*
             recipe.create_iotql(paramd.value, function(error) {
                 if (error) {
                     return callback({
@@ -418,6 +419,7 @@ RecipeTransport.prototype.update = function (paramd, callback) {
                     user: paramd.user,
                 });
             });
+             */
         });
     } else {
         return callback({
