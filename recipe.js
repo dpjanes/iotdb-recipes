@@ -227,6 +227,11 @@ Context.prototype.onclick = function (value) {
     }
 };
 
+var _load_js;
+var _load_iotql;
+var _is_post_init;
+var _init_recipe;
+
 /**
  *  Use this to load recipes
  *  <p>
@@ -291,20 +296,21 @@ var _load_iotql = function (initd) {
     }, "loading IoTQL recipes");
 
     // track new scenes being added
-    initd.db.on("scene", function(name, metad) {
+    initd.db.on("scene", function (name, metad) {
         var rd = {
             enabled: true,
             name: name,
             group: "Scenes",
             cookbook_id: "9d94e5c1-e99c-48e3-96d3-37f96f95dff0",
-            onclick: function(context, value) {
-                console.log("HERE:XXX"); process.exit();
+            onclick: function (context, value) {
+                console.log("HERE:XXX");
+                process.exit();
             }
         };
 
         iotdb.recipe(rd);
 
-        if (post_init) {
+        if (_is_post_init) {
             _init_recipe(rd);
         }
     });
@@ -329,7 +335,7 @@ var _load_iotql = function (initd) {
             filename: paramd.filename
         }, "found IoTQL");
 
-        initd.db.execute(paramd.doc, function(error, result) {
+        initd.db.execute(paramd.doc, function (error, result) {
             // console.log("HERE:AAA", paramd.doc);
         });
     });
@@ -338,8 +344,6 @@ var _load_iotql = function (initd) {
 /**
  *  Call me once
  */
-var post_init;
-var _init_recipe;
 var init_recipes = function () {
 
     var iot = iotdb.iot();
@@ -353,7 +357,7 @@ var init_recipes = function () {
         _init_recipe(cds[ci]);
     }
 
-    post_init = true;
+    _is_post_init = true;
 };
 
 var _init_recipe = function (reciped) {

@@ -43,7 +43,7 @@ var MSG_NOT_AUTHORIZED = "not authorized";
 var MSG_NOT_FOUND = "not found";
 var MSG_NOT_RECIPE = "not a Recipe";
 var MSG_NOT_APPROPRIATE = "action not available";
-var MSG_TIMESTAMP_ERROR = "try again"
+var MSG_TIMESTAMP_ERROR = "try again";
 
 var CODE_NOT_AUTHORIZED = 401;
 var CODE_NOT_FOUND = 404;
@@ -63,8 +63,7 @@ var RecipeTransport = function (initd) {
 
     self.initd = _.defaults(
         initd,
-        iotdb.keystore().get("/transports/RecipeTransport/initd"),
-        {
+        iotdb.keystore().get("/transports/RecipeTransport/initd"), {
             authorize: function (authd, callback) {
                 return callback(null, true);
             },
@@ -312,6 +311,8 @@ RecipeTransport.prototype.get = function (paramd, callback) {
  */
 RecipeTransport.prototype.update = function (paramd, callback) {
     var self = this;
+    var callbackd;
+    var authd;
 
     if (!callback) {
         callback = function () {};
@@ -339,7 +340,7 @@ RecipeTransport.prototype.update = function (paramd, callback) {
                 user: paramd.user,
             });
         }
-        var authd = {
+        authd = {
             id: paramd.id,
             authorize: "write",
             band: paramd.band,
@@ -347,7 +348,7 @@ RecipeTransport.prototype.update = function (paramd, callback) {
         };
         self.initd.authorize(authd, function (error, is_authorized) {
             if (!is_authorized) {
-                var callbackd = {
+                callbackd = {
                     id: paramd.id,
                     band: paramd.band,
                     user: paramd.user,
@@ -363,7 +364,7 @@ RecipeTransport.prototype.update = function (paramd, callback) {
             var old_timestamp = context.execute_timestamp;
 
             if (!_.timestamp.check.values(old_timestamp, new_timestamp)) {
-                var callbackd = {
+                callbackd = {
                     id: paramd.id,
                     band: paramd.band,
                     user: paramd.user,
@@ -385,7 +386,7 @@ RecipeTransport.prototype.update = function (paramd, callback) {
             });
         });
     } else if (paramd.band === "meta") {
-        var authd = {
+        authd = {
             id: paramd.id,
             authorize: "write",
             band: paramd.band,
@@ -393,7 +394,7 @@ RecipeTransport.prototype.update = function (paramd, callback) {
         };
         self.initd.authorize(authd, function (error, is_authorized) {
             if (!is_authorized) {
-                var callbackd = {
+                callbackd = {
                     id: paramd.id,
                     band: paramd.band,
                     user: paramd.user,
