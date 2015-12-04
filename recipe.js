@@ -253,6 +253,7 @@ var load_recipes = function (initd) {
 
     _load_js(initd);
     _load_iotql(initd);
+    _init_recipes();
 };
 
 var _load_js = function (initd) {
@@ -342,11 +343,7 @@ var _load_iotql = function (initd) {
     });
 };
 
-/**
- *  Call me once
- */
-var init_recipes = function () {
-
+var _init_recipes = function () {
     var iot = iotdb.iot();
     var cds = iot.data("recipe");
     if (!cds || !cds.length) {
@@ -362,6 +359,11 @@ var init_recipes = function () {
 };
 
 var _init_recipe = function (reciped) {
+    // does not need to be redone
+    if (reciped._id) {
+        return;
+    }
+
     reciped._id = recipe_to_id(reciped);
     reciped.state = {};
 
@@ -772,7 +774,7 @@ var recipe_meta = function (recipe, context) {
 exports.make_context = make_context;
 exports.order_recipe = order_recipe;
 exports.load_recipes = load_recipes;
-exports.init_recipes = init_recipes;
+exports.init_recipes = function() {};   // delete me soon
 exports.recipes = recipes;
 exports.group_recipes = group_recipes;
 exports.recipe_to_id = recipe_to_id;

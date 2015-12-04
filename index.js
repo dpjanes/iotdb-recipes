@@ -24,3 +24,12 @@
 
 exports.recipe = require('./recipe');
 exports.Transport = require('./RecipeTransport').RecipeTransport;
+
+/**
+ *  Unfortunately we cannot do this because HomeStar
+ *  wants to paramaterize load_recipes
+exports.setup = function(iotdb) {
+    exports.recipe.load_recipes();
+    exports.recipe.init_recipes();
+};
+ */
