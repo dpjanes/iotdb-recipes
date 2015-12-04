@@ -22,14 +22,18 @@
 
 "use strict";
 
-exports.recipe = require('./recipe');
+var recipe = require('./recipe');
+for (var key in recipe) {
+    exports[key] = recipe[key];
+}
+
 exports.Transport = require('./RecipeTransport').RecipeTransport;
 
 /**
  *  Unfortunately we cannot do this because HomeStar
  *  wants to paramaterize load_recipes
 exports.setup = function(iotdb) {
-    exports.recipe.load_recipes();
+    exports.load_recipes();
     exports.recipe.init_recipes();
 };
  */
