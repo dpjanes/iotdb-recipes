@@ -36,10 +36,9 @@ echo "=================="
         homestar.json package.json \
         RecipeTransport.js index.js recipe.js \
         |
-    ( cd "${NPM_DST}" && tar xvf - )
-
-    cd "${NPM_DST}" || exit 1
-    npm publish
+    ( cd "${NPM_DST}" && tar xvf - && npm publish ) || exit 1
+    git commit -m "new release" package.json || exit 1
+    git push || exit 1
 
     echo "end"
 )
