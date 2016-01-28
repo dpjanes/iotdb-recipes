@@ -293,7 +293,7 @@ RecipeTransport.prototype.get = function (paramd, callback) {
 /**
  *  See {iotdb_transport.Transport#update} for documentation.
  */
-RecipeTransport.prototype.update = function (paramd, callback) {
+RecipeTransport.prototype.put = function (paramd, callback) {
     var self = this;
     var callbackd;
     var authd;
