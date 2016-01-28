@@ -154,7 +154,7 @@ RecipeTransport.prototype.added = function (paramd, callback) {
 /**
  *  See {iotdb_transport.Transport#about} for documentation.
  */
-RecipeTransport.prototype.about = function (paramd, callback) {
+RecipeTransport.prototype.bands = function (paramd, callback) {
     var self = this;
 
     self._validate_about(paramd, callback);
@@ -181,7 +181,13 @@ RecipeTransport.prototype.about = function (paramd, callback) {
         if (!is_authorized) {
             callbackd.error = new errors.NotAuthorized();
         } else {
-            callbackd.bands = ["istate", "ostate", "model", "meta", "status", ];
+            callbackd.bandd = {
+                "istate": null, 
+                "ostate": null, 
+                "model": null, 
+                "meta": null, 
+                "status": null, 
+            };
         }
 
         return callback(callbackd);
