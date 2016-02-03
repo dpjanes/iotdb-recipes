@@ -31,7 +31,7 @@ var util = require('util');
 var path = require('path');
 
 var data = require('./data');
-var context = require('./context');
+var ctx = require('./context');
 
 var logger = iotdb.logger({
     name: 'iotdb-recipes',
@@ -189,7 +189,7 @@ var _init_recipe = function (reciped) {
     }
 
     /* this handles manipulating the recipe */
-    var context = context.make_context(reciped);
+    var context = ctx.make_context(reciped);
 
     /* IOTDB types */
     var keys = ["value", "type", "format", "unit", ];
@@ -425,7 +425,7 @@ var recipes = function () {
 /**
  */
 var recipe_model = function (recipe) {
-    var context = context.make_context(recipe);
+    var context = ctx.make_context(recipe);
 
     var value_attribute = {
         "@type": "iot:Attribute",
@@ -501,7 +501,7 @@ var recipe_recipe = function (recipe) {
  */
 var recipe_istate = function (recipe, context) {
     if (!context) {
-        context = context.make_context(recipe);
+        context = ctx.make_context(recipe);
     }
 
     var d = _.defaults({
@@ -529,7 +529,7 @@ var recipe_istate = function (recipe, context) {
  */
 var recipe_ostate = function (recipe, context) {
     if (!context) {
-        context = context.make_context(recipe);
+        context = ctx.make_context(recipe);
     }
 
     var d = {
@@ -552,7 +552,7 @@ var recipe_status = function (recipe, context) {
     var self = this;
 
     if (!context) {
-        context = context.make_context(recipe);
+        context = ctx.make_context(recipe);
     }
 
     var d = _.deepCopy(context.status);
@@ -567,7 +567,7 @@ var recipe_meta = function (recipe, context) {
     var self = this;
 
     if (!context) {
-        context = context.make_context(recipe);
+        context = ctx.make_context(recipe);
     }
 
     var d = {
