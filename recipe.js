@@ -30,9 +30,11 @@ var events = require('events');
 var util = require('util');
 var path = require('path');
 
+var data = require('./data');
+
 var logger = iotdb.logger({
-    name: 'iotdb-homestar',
-    module: 'app/recipe',
+    name: 'iotdb-recipes',
+    module: 'recipe',
 });
 
 var recipe_to_id;
@@ -231,17 +233,18 @@ var _load_js;
 var _load_iotql;
 var _is_post_init;
 var _init_recipe;
+var _recipes_loaded = false;
 
 /**
  *  Use this to load recipes
  *  <p>
- *  They end up in iot.data('recipes')
+ *  They end up in data.data('recipes')
  */
 var load_recipes = function (initd) {
-    if (iotdb.__recipes_loaded) {
+    if (_recipes_loaded) {
         return;
     }
-    iotdb.__recipes_loaded = true;
+    _recipes_loaded = true;
 
     initd = _.defaults(initd, {
         cookbooks_path: "cookbooks",
@@ -250,6 +253,8 @@ var load_recipes = function (initd) {
     });
 
     iotdb.__recipes_path = initd.cookbooks_path;
+    iotdb.cookbook = data.cookbook;
+    iotdb.recipe = data.recipe;
 
     _load_js(initd);
     _load_iotql(initd);
@@ -345,7 +350,7 @@ var _load_iotql = function (initd) {
 
 var _init_recipes = function () {
     var iot = iotdb.iot();
-    var cds = iot.data("recipe");
+    var cds = data.data("recipe");
     if (!cds || !cds.length) {
         return;
     }
@@ -516,7 +521,7 @@ var recipe_to_id = function (reciped) {
  */
 var recipe_by_id = function (id) {
     var iot = iotdb.iot();
-    var cds = iot.data("recipe");
+    var cds = data.data("recipe");
     if (!cds || !cds.length) {
         return null;
     }
@@ -556,7 +561,7 @@ var recipe_by_id = function (id) {
  */
 var group_recipes = function () {
     var iot = iotdb.iot();
-    var cds = iot.data("recipe");
+    var cds = data.data("recipe");
     if (!cds || !cds.length) {
         cds = [];
     }
@@ -587,7 +592,7 @@ var group_recipes = function () {
  */
 var recipes = function () {
     var iot = iotdb.iot();
-    var recipeds = iot.data("recipe");
+    var recipeds = data.data("recipe");
     if (!recipeds || !recipeds.length) {
         return [];
     }
@@ -774,7 +779,6 @@ var recipe_meta = function (recipe, context) {
 exports.make_context = make_context;
 exports.order_recipe = order_recipe;
 exports.load_recipes = load_recipes;
-exports.init_recipes = function() {};   // delete me soon
 exports.recipes = recipes;
 exports.group_recipes = group_recipes;
 exports.recipe_to_id = recipe_to_id;
