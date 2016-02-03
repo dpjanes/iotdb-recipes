@@ -34,6 +34,7 @@ var util = require('util');
 var url = require('url');
 
 var recipe = require('./recipe');
+var context = require('./context');
 
 var logger = bunyan.createLogger({
     name: "iotdb-homestar",
@@ -291,7 +292,7 @@ RecipeTransport.prototype.put = function (paramd, callback) {
                 return callback(new errors.NotAuthorized(), pd);
             }
 
-            var context = recipe.make_context(xd);
+            var context = context.make_context(xd);
 
             var new_timestamp = paramd.value["@timestamp"];
             var old_timestamp = context.execute_timestamp;
@@ -381,7 +382,7 @@ RecipeTransport.prototype.updated = function (paramd, callback) {
             var recipeds = recipe.recipes();
             for (var ri in recipeds) {
                 var reciped = recipeds[ri];
-                var context = recipe.make_context(reciped);
+                var context = context.make_context(reciped);
 
                 _handle_status(context);
             }

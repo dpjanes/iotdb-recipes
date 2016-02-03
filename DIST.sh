@@ -34,7 +34,7 @@ echo "=================="
         --exclude ".*" \
         README.md LICENSE \
         homestar.json package.json \
-        RecipeTransport.js index.js recipe.js \
+        RecipeTransport.js index.js recipe.js data.js context.js \
         |
     ( cd "${NPM_DST}" && tar xvf - && npm publish ) || exit 1
     git commit -m "new release" package.json || exit 1
