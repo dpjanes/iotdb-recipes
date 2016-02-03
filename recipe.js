@@ -555,7 +555,7 @@ var recipe_status = function (recipe, context) {
         context = ctx.make_context(recipe);
     }
 
-    var d = _.deepCopy(context.status);
+    var d = _.d.clone.deep(context.status);
     d["@id"] = "/api/recipes/" + recipe._id + "/status";
 
     return d;

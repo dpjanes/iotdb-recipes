@@ -75,7 +75,7 @@ util.inherits(Context, events.EventEmitter);
 Context.prototype.message = function (first) {
     var self = this;
     var old_running = self.status.running;
-    var od = _.shallowCopy(self.status);
+    var od = _.d.clone.shallow(self.status);
 
     if (first === undefined) {
         self.status.running = false;
@@ -117,7 +117,7 @@ Context.prototype.message = function (first) {
 Context.prototype.state = function (state) {
     var self = this;
 
-    var od = _.shallowCopy(self.status);
+    var od = _.d.clone.shallow(self.status);
 
     if ((state === undefined) || (state === null)) {
         self.status.text = null;
