@@ -61,7 +61,7 @@ var data = function (key, d) {
             datads.push(d);
         }
 
-        return self;
+        return _datadsd[key];
     } else {
         throw new Error("IOT.data: the value must always be an object");
     }

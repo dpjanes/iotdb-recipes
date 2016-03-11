@@ -269,8 +269,8 @@ var _init_recipe = function (reciped) {
         for (var wi in reciped.watch) {
             var things = reciped.watch[wi];
 
-            things.on_thing(_validate);
-            things.on_meta(_validate);
+            things.on("thing", _validate);
+            things.on("meta", _validate);
         }
     }
 
