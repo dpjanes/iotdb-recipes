@@ -4,20 +4,21 @@
         "url": "https://github.com/dpjanes/iotdb-recipes/issues"
     }, 
     "dependencies": {
-        "iotdb": ">=0.13.0", 
-        "iotdb-transport": "~0.0.31"
+        "iotdb": ">=0.14.0", 
+        "iotdb-errors": "~0.0.3", 
+        "iotdb-transport": "~0.0.35"
     }, 
     "description": "IOTDB Recipes - JavaScript actions that look like Things", 
     "devDependencies": {
-        "grunt": "~0.4.5", 
+        "grunt": "~1.0.1", 
         "grunt-contrib-jshint": "~1.0.0", 
         "grunt-contrib-nodeunit": "~1.0.0", 
-        "grunt-contrib-uglify": "~1.0.0", 
-        "grunt-contrib-watch": "~0.6.1", 
-        "grunt-jsbeautifier": "~0.2.10", 
-        "jshint-stylish": "~2.1.0", 
-        "load-grunt-tasks": "~3.4.1", 
-        "request": "~2.69.0"
+        "grunt-contrib-uglify": "~1.0.1", 
+        "grunt-contrib-watch": "~1.0.0", 
+        "grunt-jsbeautifier": "~0.2.12", 
+        "jshint-stylish": "~2.2.0", 
+        "load-grunt-tasks": "~3.5.0", 
+        "request": "~2.72.0"
     }, 
     "homepage": "https://homestar.io", 
     "homestar": {}, 
@@ -32,5 +33,5 @@
     "scripts": {
         "test": "grunt"
     }, 
-    "version": "0.0.12"
+    "version": "0.0.13"
 }
